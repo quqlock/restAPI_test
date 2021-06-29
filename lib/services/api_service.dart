@@ -2,10 +2,14 @@ import 'dart:convert';
 import 'package:rest_api_demo/models/note_details.dart';
 import 'package:rest_api_demo/models/note_for_listing.dart';
 import 'package:http/http.dart' as http;
+import 'package:rest_api_demo/models/note_insert.dart';
 
 class ApiService {
   static const API = 'tq-notes-api-jkrgrdggbq-el.a.run.app';
-  static const headers = {'apiKey': '0873e078-3564-47dd-842c-cb25001b13e3'};
+  static const headers = {
+    'apiKey': 'd2eea2bf-b70e-407f-8ec2-ccd028d3c513',
+    'Content-Type': 'application/json'
+  };
 
   //Lista notatek
   Future<List<NoteForListing>> getNotesList() async {
@@ -30,6 +34,16 @@ class ApiService {
       return NoteDetails.fromJson(jsonData);
     } else {
       throw "Failed to load list of notes";
+    }
+  }
+
+  Future<bool> createNote(NoteInsert newNote) async {
+    final response = await http.post(Uri.https(API, 'notes/'),
+        headers: headers, body: json.encode(newNote.toJson()));
+    if (response.statusCode == 201) {
+      return true;
+    } else {
+      return false;
     }
   }
 }

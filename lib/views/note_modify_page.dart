@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:rest_api_demo/models/note_details.dart';
+import 'package:rest_api_demo/models/note_insert.dart';
 import 'package:rest_api_demo/services/api_service.dart';
 
 class NotesModifyPage extends StatefulWidget {
@@ -75,13 +76,17 @@ class _NotesModifyPageState extends State<NotesModifyPage> {
                     height: 55,
                     width: double.infinity,
                     child: ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         if (_isEditing) {
                           //update note in API
                         } else {
-                          //create note in API
+                          final newNote = NoteInsert(
+                            noteTitle: _noteTitleController.text,
+                            noteContent: _noteContentController.text,
+                          );
+                          final result = await apiService.createNote(newNote);
+                          print(result);
                         }
-                        Navigator.of(context).pop();
                       },
                       child: Text('Submit note'),
                     ),

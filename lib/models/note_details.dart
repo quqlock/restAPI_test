@@ -16,7 +16,8 @@ class NoteDetails {
   factory NoteDetails.fromJson(Map<String, dynamic> jsonData) {
     return NoteDetails(
         noteID: jsonData['noteID'],
-        noteTitle: jsonData['noteTitle'],
+        noteTitle:
+            (jsonData['noteTitle'] == null) ? 'NULL' : jsonData['noteTitle'],
         noteContent: jsonData['noteContent'],
         creationDateTime: DateTime.parse(jsonData['createDateTime']),
         latestEditDateTime: (jsonData['latestEditDateTime']) != null

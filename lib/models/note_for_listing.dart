@@ -14,7 +14,7 @@ class NoteForListing {
   factory NoteForListing.fromJson(Map<String, dynamic> json) {
     return NoteForListing(
         noteID: json['noteID'],
-        noteTitle: json['noteTitle'],
+        noteTitle: (json['noteTitle'] == null) ? 'NULL' : json['noteTitle'],
         creationDateTime: DateTime.parse(json['createDateTime']),
         latestEditDateTime: (json['latestEditDateTime']) != null
             ? DateTime.parse(json['latestEditDateTime'])
