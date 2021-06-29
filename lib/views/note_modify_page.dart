@@ -20,33 +20,34 @@ class _NotesModifyPageState extends State<NotesModifyPage> {
   bool _isLoading = false;
 
   //Check if editing or adding new note
-  bool get isEditing => widget.noteID != null;
+  bool get _isEditing => widget.noteID != null;
 
   @override
   void initState() {
     super.initState();
 
-    if (widget.noteID != null)
+    if (_isEditing) {
       setState(() {
         _isLoading = true;
       });
-    apiService.getNoteDetails(widget.noteID!).then((resposne) {
-      _noteDetails = resposne;
-      _noteTitleController.text = _noteDetails!.noteTitle;
-      _noteContentController.text = _noteDetails!.noteContent;
-      setState(() {
-        _isLoading = false;
+      apiService.getNoteDetails(widget.noteID!).then((resposne) {
+        _noteDetails = resposne;
+        _noteTitleController.text = _noteDetails!.noteTitle;
+        _noteContentController.text = _noteDetails!.noteContent;
+        setState(() {
+          _isLoading = false;
+        });
       });
-    });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    if (isEditing == true) {}
+    if (_isEditing == true) {}
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(isEditing ? 'Edit note' : 'Create note'),
+        title: Text(_isEditing ? 'Edit note' : 'Create note'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -75,7 +76,7 @@ class _NotesModifyPageState extends State<NotesModifyPage> {
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () {
-                        if (isEditing) {
+                        if (_isEditing) {
                           //update note in API
                         } else {
                           //create note in API
