@@ -73,8 +73,21 @@ class _NotesListPageState extends State<NotesListPage> {
                   context: context,
                   builder: (context) => DeleteNote(),
                 );
-
-                return result;
+                if (result == true) {
+                  var message;
+                  final deleteResult =
+                      await apiService.deleteNote(notes[index].noteID);
+                  if (deleteResult != null) {
+                    message = "The note was deleted";
+                  }
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(message),
+                      duration: Duration(milliseconds: 3000),
+                    ),
+                  );
+                  _fetchNotes();
+                }
               },
               background: Container(
                 padding: EdgeInsets.only(left: 15),

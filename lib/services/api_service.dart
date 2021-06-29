@@ -56,4 +56,14 @@ class ApiService {
       return false;
     }
   }
+
+  Future<bool> deleteNote(String noteId) async {
+    final response =
+        await http.delete(Uri.https(API, 'notes/' + noteId), headers: headers);
+    if (response.statusCode == 204) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }
