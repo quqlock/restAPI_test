@@ -1,8 +1,8 @@
 class NoteForListing {
-  String noteID;
-  String noteTitle;
-  DateTime creationDateTime;
-  DateTime latestEditDateTime;
+  final String noteID;
+  final String noteTitle;
+  final DateTime creationDateTime;
+  final DateTime latestEditDateTime;
 
   NoteForListing({
     required this.noteID,
@@ -10,4 +10,22 @@ class NoteForListing {
     required this.creationDateTime,
     required this.latestEditDateTime,
   });
+
+  factory NoteForListing.fromMap(Map<String, dynamic> json) {
+    return NoteForListing(
+        noteID: json['noteID'],
+        noteTitle: json['noteTitle'],
+        creationDateTime: DateTime.parse(json['createDateTime']),
+        latestEditDateTime: DateTime.parse(json['latestEditDateTime']));
+  }
+
+  factory NoteForListing.fromJson(Map<String, dynamic> json) {
+    return NoteForListing(
+        noteID: json['noteID'],
+        noteTitle: json['noteTitle'],
+        creationDateTime: DateTime.parse(json['createDateTime']),
+        latestEditDateTime: (json['latestEditDateTime']) != null
+            ? DateTime.parse(json['latestEditDateTime'])
+            : DateTime.parse(json['createDateTime']));
+  }
 }

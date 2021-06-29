@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:rest_api_demo/models/note_for_listing.dart';
 import 'package:http/http.dart' as http;
-import 'package:rest_api_demo/services/notes_service.dart';
+import 'package:rest_api_demo/services/api_service.dart';
 import 'package:rest_api_demo/views/delete_note.dart';
 import 'package:rest_api_demo/views/note_modify_page.dart';
 
@@ -14,7 +14,7 @@ class NotesListPage extends StatefulWidget {
 class _NotesListPageState extends State<NotesListPage> {
   bool _isLoading = false;
   List<NoteForListing> notes = [];
-  NotesService service = NotesService();
+  ApiService service = ApiService();
 
   String formatDateTime(DateTime dateTime) {
     return '${dateTime.day}/${dateTime.month}/${dateTime.year}';
@@ -62,6 +62,7 @@ class _NotesListPageState extends State<NotesListPage> {
             );
           }
           return ListView.separated(
+            itemCount: notes.length,
             itemBuilder: (context, index) => Dismissible(
               key: ValueKey(notes[index].noteID),
               direction: DismissDirection.startToEnd,
@@ -75,15 +76,16 @@ class _NotesListPageState extends State<NotesListPage> {
                 return result;
               },
               background: Container(
-                  padding: EdgeInsets.only(left: 15),
-                  color: Colors.red,
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Icon(
-                      Icons.delete,
-                      color: Colors.white,
-                    ),
-                  )),
+                padding: EdgeInsets.only(left: 15),
+                color: Colors.red,
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Icon(
+                    Icons.delete,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
               child: ListTile(
                 title: Text(
                   notes[index].noteTitle,
@@ -106,7 +108,6 @@ class _NotesListPageState extends State<NotesListPage> {
               height: 1,
               color: Colors.green,
             ),
-            itemCount: notes.length,
           );
         },
       ),
