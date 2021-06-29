@@ -11,14 +11,6 @@ class NoteForListing {
     required this.latestEditDateTime,
   });
 
-  factory NoteForListing.fromMap(Map<String, dynamic> json) {
-    return NoteForListing(
-        noteID: json['noteID'],
-        noteTitle: json['noteTitle'],
-        creationDateTime: DateTime.parse(json['createDateTime']),
-        latestEditDateTime: DateTime.parse(json['latestEditDateTime']));
-  }
-
   factory NoteForListing.fromJson(Map<String, dynamic> json) {
     return NoteForListing(
         noteID: json['noteID'],
@@ -27,5 +19,13 @@ class NoteForListing {
         latestEditDateTime: (json['latestEditDateTime']) != null
             ? DateTime.parse(json['latestEditDateTime'])
             : DateTime.parse(json['createDateTime']));
+  }
+
+  factory NoteForListing.fromMap(Map<String, dynamic> json) {
+    return NoteForListing(
+        noteID: json['noteID'],
+        noteTitle: json['noteTitle'],
+        creationDateTime: DateTime.parse(json['createDateTime']),
+        latestEditDateTime: DateTime.parse(json['latestEditDateTime']));
   }
 }

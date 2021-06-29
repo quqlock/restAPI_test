@@ -1,7 +1,6 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:rest_api_demo/models/note_for_listing.dart';
-import 'package:http/http.dart' as http;
 import 'package:rest_api_demo/services/api_service.dart';
 import 'package:rest_api_demo/views/delete_note.dart';
 import 'package:rest_api_demo/views/note_modify_page.dart';
@@ -14,7 +13,7 @@ class NotesListPage extends StatefulWidget {
 class _NotesListPageState extends State<NotesListPage> {
   bool _isLoading = false;
   List<NoteForListing> notes = [];
-  ApiService service = ApiService();
+  ApiService get apiService => GetIt.I<ApiService>();
 
   String formatDateTime(DateTime dateTime) {
     return '${dateTime.day}/${dateTime.month}/${dateTime.year}';
@@ -31,7 +30,7 @@ class _NotesListPageState extends State<NotesListPage> {
     setState(() {
       _isLoading = true;
     });
-    notes = await service.getNotesList();
+    notes = await apiService.getNotesList();
     setState(() {
       _isLoading = false;
     });
