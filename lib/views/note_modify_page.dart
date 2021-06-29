@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:rest_api_demo/models/note_details.dart';
-import 'package:rest_api_demo/models/note_insert.dart';
+import 'package:rest_api_demo/models/note_manipulation.dart';
 import 'package:rest_api_demo/services/api_service.dart';
 
 class NotesModifyPage extends StatefulWidget {
@@ -78,14 +78,73 @@ class _NotesModifyPageState extends State<NotesModifyPage> {
                     child: ElevatedButton(
                       onPressed: () async {
                         if (_isEditing) {
-                          //update note in API
+                          setState(() {
+                            _isLoading = true;
+                          });
+
+                          final newNote = NoteManipulation(
+                            noteTitle: _noteTitleController.text,
+                            noteContent: _noteContentController.text,
+                          );
+                          final result = await apiService.updateNote(
+                              widget.noteID!, newNote);
+                          print(result);
+                          String alertText = 'Note was updated';
+                          setState(() {
+                            _isLoading = false;
+                          });
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: Text('Done'),
+                              content: Text(alertText),
+                              actions: [
+                                ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text('OK'),
+                                ),
+                              ],
+                            ),
+                          ).then((data) {
+                            if (result == true) {
+                              Navigator.of(context).pop();
+                            }
+                          });
                         } else {
-                          final newNote = NoteInsert(
+                          setState(() {
+                            _isLoading = true;
+                          });
+                          final newNote = NoteManipulation(
                             noteTitle: _noteTitleController.text,
                             noteContent: _noteContentController.text,
                           );
                           final result = await apiService.createNote(newNote);
+                          String alertText = 'New note was added';
                           print(result);
+                          setState(() {
+                            _isLoading = false;
+                          });
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: Text('Done'),
+                              content: Text(alertText),
+                              actions: [
+                                ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text('OK'),
+                                ),
+                              ],
+                            ),
+                          ).then((data) {
+                            if (result == true) {
+                              Navigator.of(context).pop();
+                            }
+                          });
                         }
                       },
                       child: Text('Submit note'),

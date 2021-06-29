@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:rest_api_demo/models/note_details.dart';
 import 'package:rest_api_demo/models/note_for_listing.dart';
 import 'package:http/http.dart' as http;
-import 'package:rest_api_demo/models/note_insert.dart';
+import 'package:rest_api_demo/models/note_manipulation.dart';
 
 class ApiService {
   static const API = 'tq-notes-api-jkrgrdggbq-el.a.run.app';
@@ -37,10 +37,20 @@ class ApiService {
     }
   }
 
-  Future<bool> createNote(NoteInsert newNote) async {
+  Future<bool> createNote(NoteManipulation newNote) async {
     final response = await http.post(Uri.https(API, 'notes/'),
         headers: headers, body: json.encode(newNote.toJson()));
     if (response.statusCode == 201) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Future<bool> updateNote(String noteId, NoteManipulation editedNote) async {
+    final response = await http.put(Uri.https(API, 'notes/' + noteId),
+        headers: headers, body: json.encode(editedNote.toJson()));
+    if (response.statusCode == 204) {
       return true;
     } else {
       return false;

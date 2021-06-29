@@ -49,7 +49,9 @@ class _NotesListPageState extends State<NotesListPage> {
             MaterialPageRoute(
               builder: (context) => NotesModifyPage(),
             ),
-          );
+          ).then((_) {
+            _fetchNotes();
+          });
         },
         child: Icon(Icons.add),
       ),
@@ -93,13 +95,17 @@ class _NotesListPageState extends State<NotesListPage> {
                 subtitle: Text(
                     'Last edited on: ${formatDateTime(notes[index].creationDateTime)}'),
                 onTap: () {
-                  Navigator.of(context).push(
+                  Navigator.of(context)
+                      .push(
                     MaterialPageRoute(
                       builder: (context) => NotesModifyPage(
                         noteID: notes[index].noteID,
                       ),
                     ),
-                  );
+                  )
+                      .then((_) {
+                    _fetchNotes();
+                  });
                 },
               ),
             ),
